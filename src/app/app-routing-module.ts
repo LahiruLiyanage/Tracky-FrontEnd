@@ -2,11 +2,17 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { Dashboard } from './components/dashboard/dashboard';
 import { LandingComponent } from './components/landing/landing';
+import { Login } from './components/auth/login/login';
 
 const routes: Routes = [
-  { path: '', component: LandingComponent },
-  // { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: Dashboard },
+  {
+    path: '',
+    component: Dashboard,
+    children: [
+      { path: '', component: LandingComponent }, // default: landing page
+      { path: 'login', component: Login }        // /login: login form
+    ]
+  },
 ];
 
 @NgModule({

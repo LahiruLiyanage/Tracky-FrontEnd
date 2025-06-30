@@ -1,7 +1,7 @@
 <header class="header ms-4 me-4 mh-2">
   <nav class="navbar">
     <div class="nav-brand">
-      <h2>Tracky</h2>
+      <h2 class="display-5 fw-bold text-primary mb-4">Tracky</h2>
     </div>
     <!-- <div class="nav-menu">
       <ul class="nav-list">
@@ -10,13 +10,26 @@
         </li>
       </ul>
     </div> -->
-    <div class="nav-actions m-2">
+    <div class="nav-actions m-2 d-flex justify-content-end">
       <button class="btn btn-outline-primary" (click)="onSignupClick()">
         SignUp
       </button>
-      <button class="btn btn-outline-primary" (click)="onLoginClick()">
-        Login
-      </button>
+      <div class="ms-2 me-2 login">
+        <button
+          class="btn btn-outline-primary"
+          *ngIf="!isLoggedIn()"
+          (click)="onLoginClick()"
+        >
+          Login
+        </button>
+        <button
+          class="btn btn-outline-primary"
+          *ngIf="isLoggedIn()"
+          (click)="logout()"
+        >
+          Logout
+        </button>
+      </div>
     </div>
   </nav>
 </header>
