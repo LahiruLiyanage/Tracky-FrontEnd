@@ -1,10 +1,17 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { AuthResponse, ChangePasswordRequest, ForgotPasswordRequest, LoginRequest, ResetPasswordRequest, SignupRequest } from "../models/user.model";
-import { Observable } from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import {
+  LoginRequest,
+  SignupRequest,
+  AuthResponse,
+  ChangePasswordRequest,
+  ForgotPasswordRequest,
+  ResetPasswordRequest,
+} from '../models/user.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/v1/auth';
@@ -20,7 +27,9 @@ export class AuthService {
   }
 
   refreshToken(refreshToken: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/refresh`, { refreshToken });
+    return this.http.post<AuthResponse>(`${this.apiUrl}/refresh`, {
+      refreshToken,
+    });
   }
 
   changePassword(data: ChangePasswordRequest): Observable<any> {
@@ -32,6 +41,20 @@ export class AuthService {
   }
 
   resetPassword(data: ResetPasswordRequest): Observable<any> {
-    return this.http.put(`${this.apiUrl}/reset-password`, data);
+    return this.http.post(`${this.apiUrl}/reset-password`, data);
+  }
+
+  logout(): void {
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+  }
+
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('accessToken');
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('accessToken');
   }
 }
