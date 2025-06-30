@@ -6,6 +6,7 @@ import { App } from './app';
 import { Header } from './components/header/header';
 import { Dashboard } from './components/dashboard/dashboard';
 import { Footer } from './components/footer/footer';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { Footer } from './components/footer/footer';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners()
