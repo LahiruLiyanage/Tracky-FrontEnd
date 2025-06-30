@@ -8,7 +8,7 @@ import { Dashboard } from './components/dashboard/dashboard';
 import { Footer } from './components/footer/footer';
 import { provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
-import { LandingComponent } from './components/landing/landing';
+import { Landing } from './components/landing/landing';
 import { Login } from './components/auth/login/login';
 
 @NgModule({
@@ -22,7 +22,7 @@ import { Login } from './components/auth/login/login';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    LandingComponent,
+    Landing,
     Login
   ],
   providers: [

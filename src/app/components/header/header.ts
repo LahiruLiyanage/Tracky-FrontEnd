@@ -12,11 +12,11 @@ export class Header {
   constructor(private router: Router, public authService: AuthService) {}
 
   onLoginClick(): void {
-    this.router.navigate(['dashboard/login']);
+    this.router.navigate(['/login']);
   }
 
   onSignupClick(): void {
-    this.router.navigate(['dashboard/signup']);
+    this.router.navigate(['/signup']);
   }
 
   isLoggedIn(): boolean {

@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [CommonModule],
 })
-export class LandingComponent {
+export class Landing {
   features = [
     {
       icon: '📋',
