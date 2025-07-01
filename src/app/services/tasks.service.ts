@@ -22,18 +22,38 @@ export class TaskService {
   }
 
   getTask(id: string): Observable<Task> {
-    return this.http.get<Task>(`${this.apiUrl}/${id}`);
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    return this.http.get<Task>(`${this.apiUrl}/${id}`, { headers });
   }
 
-  createTask(data: CreateTaskRequest): Observable<Task> {
-    return this.http.post<Task>(this.apiUrl, data);
+  addTask(task: Partial<Task>): Observable<Task> {
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    return this.http.post<Task>(this.apiUrl, task, { headers });
   }
 
-  updateTask(id: string, data: CreateTaskRequest): Observable<Task> {
-    return this.http.put<Task>(`${this.apiUrl}/${id}`, data);
+  updateTask(task: Task): Observable<Task> {
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers });
   }
 
-  deleteTask(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  deleteTask(taskId: string): Observable<any> {
+    const token = localStorage.getItem('accessToken');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    return this.http.delete(`${this.apiUrl}/${taskId}`, { headers });
   }
 }

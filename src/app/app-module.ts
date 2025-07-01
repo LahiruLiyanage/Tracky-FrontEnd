@@ -6,7 +6,7 @@ import { App } from './app';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Landing } from './components/landing/landing';
 import { Login } from './components/auth/login/login';
 import { Tasks } from './components/tasks/tasks';
@@ -19,6 +19,7 @@ import { Signup } from './components/auth/signup/signup';
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    FormsModule,
     Landing,
     Login,
     Tasks,

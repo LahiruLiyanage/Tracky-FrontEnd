@@ -1,4 +1,5 @@
 export interface Task {
+completed: any;
   id: string;
   title: string;
   description: string;

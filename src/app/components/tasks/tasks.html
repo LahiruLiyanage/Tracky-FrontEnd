@@ -1,5 +1,16 @@
 <div class="tasks-container">
-  <h2 class="mb-4">Your Tasks</h2>
+  <div class="tasks-header">
+    <h2>Your Tasks</h2>
+    <button class="add-btn" (click)="showAddTask = true">+ Add Task</button>
+  </div>
+
+  <!-- Add Task Form -->
+    <form *ngIf="showAddTask" (ngSubmit)="addTask()">
+    <input [(ngModel)]="newTaskTitle" placeholder="Task title" required name="title" />
+    <button type="submit" [disabled]="!newTaskTitle">Add</button>
+    <button type="button" (click)="showAddTask = false">Cancel</button>
+  </form>
+
   <div *ngIf="loading" class="text-center">
     <div class="spinner-border text-primary"></div>
   </div>
@@ -9,8 +20,10 @@
       No tasks found.
     </div>
     <ul class="list-group" *ngIf="tasks.length > 0">
-      <li class="list-group-item" *ngFor="let task of tasks">
-        <h5>{{ task.title }}</h5>
+      <li class="list-group-item task-item" *ngFor="let task of tasks">
+        <input type="checkbox" [checked]="task.completed" (change)="markComplete(task)" />
+        <span [class.completed]="task.completed">{{ task.title }}</span>
+        <button class="delete-btn" (click)="deleteTask(task)">🗑️</button>
         <p>{{ task.description }}</p>
       </li>
     </ul>
