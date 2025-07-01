@@ -4,31 +4,33 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
 import { Header } from './components/header/header';
-import { Dashboard } from './components/dashboard/dashboard';
 import { Footer } from './components/footer/footer';
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Landing } from './components/landing/landing';
 import { Login } from './components/auth/login/login';
+import { Tasks } from './components/tasks/tasks';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
-  declarations: [
-    App,
-    Header,
-    Dashboard,
-    Footer
-  ],
+  declarations: [App, Header, Footer],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     Landing,
-    Login
+    Login,
+    Tasks,
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideHttpClient()
+    provideHttpClient(),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
   ],
-  bootstrap: [App]
+  bootstrap: [App],
 })
-export class AppModule { }
+export class AppModule {}

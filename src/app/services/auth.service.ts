@@ -23,6 +23,7 @@ export class AuthService {
   }
 
   login(data: LoginRequest): Observable<AuthResponse> {
+    console.log('Login data:', data);
     return this.http.post<AuthResponse>(`${this.apiUrl}/login`, data);
   }
 

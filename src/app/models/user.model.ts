@@ -17,7 +17,7 @@ export interface SignupRequest {
 }
 
 export interface AuthResponse {
-  user: User;
+  userId: string;
   accessToken: string;
   refreshToken: string;
 }

@@ -1,22 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { Dashboard } from './components/dashboard/dashboard';
 import { Landing } from './components/landing/landing';
 import { Login } from './components/auth/login/login';
+import { Tasks } from './components/tasks/tasks';
 
 const routes: Routes = [
   {
-    path: '',
-    component: Dashboard,
-    children: [
-      { path: '', component: Landing }, // default: landing page
-      { path: 'login', component: Login }        // /login: login form
-    ]
+      path: '',
+      component: Landing
   },
+  {
+      path: 'login',
+      component: Login
+  },
+  {
+      path: 'tasks',
+      component: Tasks
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: []
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

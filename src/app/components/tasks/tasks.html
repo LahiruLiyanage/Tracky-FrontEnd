@@ -1,0 +1,18 @@
+<div class="tasks-container">
+  <h2 class="mb-4">Your Tasks</h2>
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary"></div>
+  </div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+  <div *ngIf="!loading && !error">
+    <div *ngIf="tasks.length === 0" class="alert alert-info">
+      No tasks found.
+    </div>
+    <ul class="list-group" *ngIf="tasks.length > 0">
+      <li class="list-group-item" *ngFor="let task of tasks">
+        <h5>{{ task.title }}</h5>
+        <p>{{ task.description }}</p>
+      </li>
+    </ul>
+  </div>
+</div>

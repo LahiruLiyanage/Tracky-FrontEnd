@@ -1,18 +1,24 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { CreateTaskRequest, Task } from "../models/task.model";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { CreateTaskRequest, Task } from '../models/task.model';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class TaskService {
   private apiUrl = 'http://localhost:3000/api/v1/tasks';
 
   constructor(private http: HttpClient) {}
 
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>(this.apiUrl);
+  async getTasks(userId: string | null): Promise<Observable<Task[]>> {
+    const token = await localStorage.getItem('accessToken');
+    const headers = {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+    // console.log('Fetching tasks for user:', userId);
+    return this.http.get<Task[]>(`${this.apiUrl}/all/${userId}`, { headers });
   }
 
   getTask(id: string): Observable<Task> {
