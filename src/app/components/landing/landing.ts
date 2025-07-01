@@ -1,14 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { Tasks } from "../tasks/tasks";
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.html',
   styleUrls: ['./landing.scss'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, Tasks],
 })
 export class Landing {
+  constructor(private authService: AuthService) {}
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn();
+  }
+
   features = [
     {
       icon: '📋',

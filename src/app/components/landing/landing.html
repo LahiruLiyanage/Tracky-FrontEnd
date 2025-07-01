@@ -1,4 +1,6 @@
-<div class="landing-page">
+<app-tasks *ngIf="isLoggedIn"></app-tasks>
+
+<div *ngIf="!isLoggedIn" class="landing-page">
   <!-- Hero Section -->
   <section class="hero-section text-center py-5">
     <div class="container">
