@@ -11,6 +11,7 @@ import { Landing } from './components/landing/landing';
 import { Login } from './components/auth/login/login';
 import { Tasks } from './components/tasks/tasks';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { Signup } from './components/auth/signup/signup';
 
 @NgModule({
   declarations: [App, Header, Footer],
@@ -21,6 +22,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     Landing,
     Login,
     Tasks,
+    Signup
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
