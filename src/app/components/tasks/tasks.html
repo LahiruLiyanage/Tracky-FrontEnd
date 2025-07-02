@@ -1,31 +1,182 @@
-<div class="tasks-container">
-  <div class="tasks-header">
-    <h2>Your Tasks</h2>
-    <button class="add-btn" (click)="showAddTask = true">+ Add Task</button>
-  </div>
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white">
+        <div class="d-flex justify-content-between align-items-center">
+          <h4 class="mb-0">Your Tasks</h4>
+          <button class="btn btn-light btn-sm" (click)="showAddTask = true">
+            <i class="fas fa-plus me-1"></i>Add Task
+          </button>
+        </div>
+      </div>
+      <div class="card-body p-4">
+        <!-- Add Task Form -->
+        <div *ngIf="showAddTask" class="mb-4">
+          <div class="card border-secondary">
+            <div class="card-header bg-light">
+              <h6 class="mb-0">Add New Task</h6>
+            </div>
+            <div class="card-body">
+              <form (ngSubmit)="addTask()">
+                <div class="mb-3">
+                  <label for="taskTitle" class="form-label">Task Title</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="taskTitle"
+                    [(ngModel)]="newTaskTitle"
+                    name="title"
+                    placeholder="Enter task title"
+                    required
+                  />
+                </div>
+                <div class="mb-3">
+                  <label for="taskDescription" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="taskDescription"
+                    [(ngModel)]="newTaskDescription"
+                    name="description"
+                    placeholder="Enter task description (optional)"
+                    rows="3"
+                  ></textarea>
+                </div>
+                <div class="d-flex gap-2">
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    [disabled]="!newTaskTitle.trim()"
+                  >
+                    <i class="fas fa-check me-1"></i>Add Task
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    (click)="showAddTask = false"
+                  >
+                    <i class="fas fa-times me-1"></i>Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
 
-  <!-- Add Task Form -->
-    <form *ngIf="showAddTask" (ngSubmit)="addTask()">
-    <input [(ngModel)]="newTaskTitle" placeholder="Task title" required name="title" />
-    <button type="submit" [disabled]="!newTaskTitle">Add</button>
-    <button type="button" (click)="showAddTask = false">Cancel</button>
-  </form>
+        <!-- Loading State -->
+        <div *ngIf="loading" class="text-center py-4">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2 text-muted">Loading your tasks...</p>
+        </div>
 
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border text-primary"></div>
-  </div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div *ngIf="!loading && !error">
-    <div *ngIf="tasks.length === 0" class="alert alert-info">
-      No tasks found.
+        <!-- Error State -->
+        <div
+          *ngIf="error"
+          class="alert alert-danger alert-dismissible"
+          role="alert"
+        >
+          <i class="fas fa-exclamation-circle me-2"></i>{{ error }}
+          <button
+            type="button"
+            class="btn-close"
+            (click)="clearError()"
+          ></button>
+        </div>
+
+        <!-- Tasks Content -->
+        <div *ngIf="!loading && !error">
+          <!-- Empty State -->
+          <div *ngIf="tasks.length === 0" class="text-center py-4">
+            <div class="alert alert-info border-0 bg-light">
+              <i class="fas fa-info-circle me-2"></i>
+              No tasks found. Click "Add Task" to get started!
+            </div>
+          </div>
+
+          <!-- Tasks List -->
+          <div *ngIf="tasks.length > 0">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h6 class="mb-0 text-muted">
+                {{ tasks.length }} task(s) total
+                <span
+                  class="badge bg-success ms-2"
+                  *ngIf="completedTasksCount > 0"
+                >
+                  {{ completedTasksCount }} completed
+                </span>
+                <span
+                  class="badge bg-warning ms-1"
+                  *ngIf="pendingTasksCount > 0"
+                >
+                  {{ pendingTasksCount }} pending
+                </span>
+              </h6>
+              <button
+                class="btn btn-outline-primary btn-sm"
+                (click)="refreshTasks()"
+              >
+                <i class="fas fa-refresh me-1"></i>Refresh
+              </button>
+            </div>
+            <div class="list-group">
+              <div
+                class="list-group-item list-group-item-action"
+                *ngFor="let task of tasks; let i = index"
+                [class.list-group-item-success]="task.completed"
+              >
+                <div class="d-flex align-items-start">
+                  <div class="form-check me-3 mt-1">
+                    <input
+                      class="form-check-input"
+                      type="checkbox"
+                      [id]="'task-' + i"
+                      [checked]="task.completed"
+                      (change)="markComplete(task)"
+                    />
+                  </div>
+                  <div class="flex-grow-1">
+                    <h6
+                      class="mb-1"
+                      [class.text-decoration-line-through]="task.completed"
+                      [class.text-muted]="task.completed"
+                    >
+                      {{ task.title }}
+                    </h6>
+                    <p
+                      class="mb-1 small"
+                      [class.text-muted]="task.completed"
+                      *ngIf="task.description"
+                    >
+                      {{ task.description }}
+                    </p>
+                    <small class="text-muted">
+                      <i
+                        class="fas fa-circle-check me-1"
+                        *ngIf="task.completed"
+                      ></i>
+                      <i
+                        class="fas fa-circle me-1 text-warning"
+                        *ngIf="!task.completed"
+                      ></i>
+                      {{ task.completed ? 'Completed' : 'Pending' }}
+                    </small>
+                  </div>
+                  <button
+                    class="btn btn-outline-danger btn-sm ms-2"
+                    (click)="deleteTask(task)"
+                    title="Delete task"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <ul class="list-group" *ngIf="tasks.length > 0">
-      <li class="list-group-item task-item" *ngFor="let task of tasks">
-        <input type="checkbox" [checked]="task.completed" (change)="markComplete(task)" />
-        <span [class.completed]="task.completed">{{ task.title }}</span>
-        <button class="delete-btn" (click)="deleteTask(task)">🗑️</button>
-        <p>{{ task.description }}</p>
-      </li>
-    </ul>
   </div>
 </div>

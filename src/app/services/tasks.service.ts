@@ -11,13 +11,14 @@ export class TaskService {
 
   constructor(private http: HttpClient) {}
 
-  async getTasks(userId: string | null): Promise<Observable<Task[]>> {
-    const token = await localStorage.getItem('accessToken');
+  // Fixed: Remove async/await and return Observable directly
+  getTasks(userId: string | null): Observable<Task[]> {
+    const token = localStorage.getItem('accessToken');
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
-    // console.log('Fetching tasks for user:', userId);
+    console.log('Fetching tasks for user:', userId);
     return this.http.get<Task[]>(`${this.apiUrl}/all/${userId}`, { headers });
   }
 
@@ -36,16 +37,20 @@ export class TaskService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
+    console.log('Adding task:', task);
     return this.http.post<Task>(this.apiUrl, task, { headers });
   }
 
-  updateTask(task: Task): Observable<Task> {
+  updateTask(task: any): Observable<any> {
     const token = localStorage.getItem('accessToken');
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
-    return this.http.put<Task>(`${this.apiUrl}/${task.id}`, task, { headers });
+    console.log('Updating task:', task);
+    return this.http.put<Task>(`${this.apiUrl}/update/${task.id}`, task, {
+      headers,
+    });
   }
 
   deleteTask(taskId: string): Observable<any> {

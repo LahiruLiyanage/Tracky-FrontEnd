@@ -1,10 +1,11 @@
 export interface Task {
-completed: any;
   id: string;
   title: string;
   description: string;
-  deleted?: boolean;
   userId: string;
+  completed: boolean;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface CreateTaskRequest {
