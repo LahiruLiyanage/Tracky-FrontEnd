@@ -31,14 +31,14 @@ export class TaskService {
     return this.http.get<Task>(`${this.apiUrl}/${id}`, { headers });
   }
 
-  addTask(task: Partial<Task>): Observable<Task> {
+  addTask(task: any): Observable<any> {
     const token = localStorage.getItem('accessToken');
     const headers = {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
-    console.log('Adding task:', task);
-    return this.http.post<Task>(this.apiUrl, task, { headers });
+    console.log('Adding task:', token);
+    return this.http.post<any>(`${this.apiUrl}/create`, task, { headers });
   }
 
   updateTask(task: any): Observable<any> {
@@ -48,7 +48,7 @@ export class TaskService {
       'Content-Type': 'application/json',
     };
     console.log('Updating task:', task);
-    return this.http.put<Task>(`${this.apiUrl}/update/${task.id}`, task, {
+    return this.http.put<Task>(`${this.apiUrl}/update/${task._id}`, task, {
       headers,
     });
   }
@@ -59,6 +59,6 @@ export class TaskService {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     };
-    return this.http.delete(`${this.apiUrl}/${taskId}`, { headers });
+    return this.http.delete(`${this.apiUrl}/delete/${taskId}`, { headers });
   }
 }

@@ -34,12 +34,12 @@ export class Tasks implements OnInit {
       }
 
       this.userId = userId;
-      console.log('Fetching tasks for user:', userId);
+      // console.log('Fetching tasks for user:', userId);
 
       // Remove the await here since getTasks now returns Observable directly
       this.taskService.getTasks(userId).subscribe({
         next: (tasks: Task[]) => {
-          console.log('Received tasks:', tasks);
+          // console.log('Received tasks:', tasks);
           if (tasks.length > 0) {
             console.log('First task properties:', Object.keys(tasks[0]));
             console.log('First task:', tasks[0]);
@@ -48,13 +48,13 @@ export class Tasks implements OnInit {
           this.loading = false;
         },
         error: (err: any) => {
-          console.error('Error fetching tasks:', err);
+          // console.error('Error fetching tasks:', err);
           this.error = err.error?.message || 'Failed to load tasks';
           this.loading = false;
         },
       });
     } catch (error) {
-      console.error('Exception in getData:', error);
+      // console.error('Exception in getData:', error);
       this.error = 'Failed to load tasks';
       this.loading = false;
     }
@@ -78,12 +78,13 @@ export class Tasks implements OnInit {
       }
     }
 
-    console.log('Adding task for user:', this.userId);
+    // console.log('Adding task for user:', this.userId);
 
     // Try Option 1: Minimal fields only
     const newTaskData = {
       title: this.newTaskTitle.trim(),
       description: this.newTaskDescription.trim(),
+      userId: this.userId,
     };
 
     console.log('New task data:', newTaskData);
@@ -106,7 +107,7 @@ export class Tasks implements OnInit {
   }
 
   markComplete(task: Task) {
-    console.log('Marking task complete:', task);
+    // console.log('Marking task complete:', task);
 
     // Validate task object
     if (!task || typeof task !== 'object') {
@@ -115,7 +116,9 @@ export class Tasks implements OnInit {
       return;
     }
 
-    if (!task.id) {
+    // console.log('Task:', task);
+
+    if (!task._id) {
       console.error('Task missing ID:', task);
       this.error = 'Task ID is missing';
       return;
@@ -123,8 +126,8 @@ export class Tasks implements OnInit {
 
     // Create updated task object with all required fields
     const updatedTask = {
-      id: task.id,
-      completed: true,
+      _id: task._id,
+      completed: !task.completed,
     };
 
     console.log('Updating task:', updatedTask);
@@ -144,22 +147,23 @@ export class Tasks implements OnInit {
         console.error('Error updating task:', err);
         this.error = err.error?.message || 'Failed to update task';
       },
+      complete: this.getData.bind(this),
     });
   }
 
   deleteTask(task: Task) {
-    console.log('Deleting task:', task);
+    // console.log('Deleting task:', task);
 
-    if (!task || !task.id) {
+    if (!task || !task._id) {
       console.error('Task or task ID is missing:', task);
       this.error = 'Task ID is missing';
       return;
     }
 
     if (confirm('Are you sure you want to delete this task?')) {
-      console.log('Deleting task with ID:', task.id);
+      console.log('Deleting task with ID:', task._id);
 
-      this.taskService.deleteTask(task.id).subscribe({
+      this.taskService.deleteTask(task._id).subscribe({
         next: (response) => {
           console.log('Task deleted successfully:', response);
           this.getData();
